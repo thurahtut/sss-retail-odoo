@@ -1,0 +1,27 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* inventory_adjustment_cost_price
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-18 07:51+0000\n"
+"PO-Revision-Date: 2018-12-18 07:51+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: inventory_adjustment_cost_price
+#: model:ir.model.fields,field_description:inventory_adjustment_cost_price.field_stock_inventory_line_currency_id
+msgid "Currency"
+msgstr "Valiuta"
+
+#. module: inventory_adjustment_cost_price
+#: model:ir.model.fields,field_description:inventory_adjustment_cost_price.field_stock_inventory_line_unit_cost
+msgid "Unit Cost"
+msgstr "Vieneto savikaina"
+

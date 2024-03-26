@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_margin_report_layout">
+        <div class="header">
+            <h1 style="height:15mm;"/>
+            <div>
+                <span style="font-family:Poppins;font-size:16pt;color:black;;margin-left:250px">
+                    Sale Margin Report
+                </span>
+            </div>
+        </div>
+        <div class="page">
+            <link href="/sale_margin_report_ept/static/src/css/report.css" type="text/css" rel="stylesheet"/>
+            <div class="act_as_table list_table" style="margin-top: 10px;"/>
+            <div class="act_as_table data_table" style="width: 100%;">
+                <div class="act_as_row labels">
+                    <div class="act_as_cell">
+                        From Date :
+                        <span t-esc="docs.min_date"/>
+                    </div>
+                    <div class="act_as_cell">To Date :
+                        <span t-esc="docs.max_date"/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+
+            <div class="act_as_table data_table" style="width: 100%;">
+                <t t-set="no" t-value="0"/>
+                <t t-call="sale_margin_report_ept.sale_margin_report_header"/>
+                <t t-foreach="get_sale_order(docs)" t-as="o">
+                    <t t-foreach="o.order_line" t-as="line">
+                        <t t-if="not docs.product_ids or (docs.product_ids and line.product_id.id in docs.product_ids.ids)">
+                            <t t-if="get_margin(line) &lt; 0 and docs.is_negative">
+
+                                <div class="act_as_row lines">
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="str('%s %s'%([line.product_id.default_code] if line.product_id.default_code else '',line.product_id.name))"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.date_order"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.partner_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.warehouse_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.team_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.user_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;">
+                                            <t t-raw="line.order_id.company_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;float:right;">
+                                            <t t-esc="get_cost(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;float:right;">
+                                            <t t-raw="line.price_subtotal"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;float:right;">
+                                            <t t-raw="get_discount(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;float:right;">
+                                            <t t-raw="get_margin(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:#ee1e1e;float:right;">
+                                            <t t-raw="get_margin_percentage(line)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-if="not docs.is_negative or (get_margin(line) &gt;= 0 and docs.is_negative)">
+                                <div class="act_as_row lines">
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="str('%s %s'%([line.product_id.default_code] if line.product_id.default_code else '',line.product_id.name))"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.date_order"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.partner_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.warehouse_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.team_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.user_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;">
+                                            <t t-raw="line.order_id.company_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;float:right;">
+                                            <t t-esc="get_cost(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;float:right;">
+                                            <t t-raw="line.price_subtotal"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;float:right;">
+                                            <t t-raw="get_discount(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;float:right;">
+                                            <t t-raw="get_margin(line)"/>
+                                        </span>
+                                    </div>
+                                    <div class="act_as_cell left">
+                                        <span style="font-family:Poppins;color:black;float:right;">
+                                            <t t-raw="get_margin_percentage(line)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+                    </t>
+                </t>
+
+            </div>
+        </div>
+    </template>
+
+    <template
+            id="sale_margin_report_ept.sale_margin_report_header">
+        <div class="act_as_thead">
+            <div class="act_as_row labels">
+                <div class="act_as_cell first_column" style="vertical-align:middle;width: 5.00%;">Sale Order</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%">Product Name</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 7.80%;">Date</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.57%;">Customer</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.45%;">Warehouse</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 5.45%;">Team</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.80%;">Salesperson</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.45%;">Company</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%;">Cost</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%;">Untaxed Sale</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%;">Discount Amount</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%;">Margin Amount</div>
+                <div class="act_as_cell" style="vertical-align:middle; width: 8.00%;">Margin Percentage</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_template">
+        <t t-call="web.html_container">
+            <t t-call="sale_margin_report_ept.internal_layout">
+                <t t-call="sale_margin_report_ept.sale_margin_report_layout"/>
+            </t>
+        </t>
+    </template>
+</odoo>

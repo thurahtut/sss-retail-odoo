@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="sale_margin_report_view" model="ir.ui.view">
+        <field name="name">sale.margin.report.view</field>
+        <field name="model">sale.margin.report</field>
+        <field name="arch" type="xml">
+            <form string="Sale Margin Report">
+                <group>
+                     <group col="2">
+                        <field name="min_date" required="1"/>
+                        <field name="company_ids" widget="many2many_tags"/>
+                    </group>
+                    <group col="2">
+                        <field name="max_date" required="1"/>
+                        <field name="warehouse_ids" widget="many2many_tags"/>
+                    </group>
+                    <group col="2">
+                        <field name="product_ids" widget="many2many_tags"/>
+                        <field name="team_ids" widget="many2many_tags"/>
+                    </group>
+                    <group col="2">
+                        <field name="partner_ids" widget="many2many_tags"/>
+                        <field name="user_ids" widget="many2many_tags"/>
+                    </group>
+                    <group col="2">
+                        <field name="order_ids" widget="many2many_tags"/>
+                    </group>
+                    <group col="2">
+                        <field name="is_negative"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_sale_margin_report" string="Print Excel Report" type="object"
+                            default_focus="1" class="oe_highlight"/>
+                     <button name="generate_pdf_report" string="Print PDF Report" type="object"
+                            default_focus="1" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_margin_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Sale Margin Report</field>
+        <field name="res_model">sale.margin.report</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sale_margin_report_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Reporting" parent="sale.sale_menu_root"
+              groups="sales_team.group_sale_manager"
+              id="sale.menu_sale_report" sequence="40"/>
+
+    <menuitem id="menu_sale_report_all" name="Sales"
+              parent="sale.menu_sale_report" groups="sales_team.group_sale_manager"
+              action="sale.action_order_report_all" sequence="1"/>
+
+    <menuitem id="menu_sale_margin_report" name="Sale Margin Report"
+              parent="sale.menu_sale_report" groups="sales_team.group_sale_manager"
+              action="sale_margin_report_wizard_action" sequence="3"/>
+
+    </data>
+</odoo>
+
